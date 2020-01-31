@@ -81,7 +81,7 @@ To display all the different options on a command:
 ## instruments
 To display all the instruments available:
 
-<code>./bin/woorton getInstruments</code>
+<code>./bin/woorton getInstruments --token yourToken --environment sandbox</code>
 
 Example response: 
 

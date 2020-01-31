@@ -53,16 +53,13 @@ Example response:
 	-h, --help                 output usage information
 
 	Commands:
-	getBalance
-	getExposures
-	getInstruments
-	getLedger [options]
-	requestForQuote [options]
-	trade [options]
-	makeTrade [options]
-	order [options]
-	testWebsocket [options]
-	getLevels [options]
+	  getBalance [options]
+	  getExposures [options]
+	  getInstruments [options]
+	  getLedger [options]
+	  requestForQuote [options]
+	  order [options]
+	  streamPrice [options]
 
 To display all the different options on a command:
 
@@ -74,7 +71,9 @@ To display all the different options on a command:
 	--amount [amount]          
 	--total [total]            
 	--instrument [instrument]  
-	--direction [direction]    
+	--direction [direction]
+	--token [token]
+	--environment [environment]
 	-h, --help                 output usage information
 
 <br>
@@ -109,7 +108,7 @@ Example response:
 ## requestForQuote
 To make a request for quote:
 
-<code>./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy</code>
+<code>./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy --token yourToken --environment sandbox</code>
 
 Example response: 
 
@@ -117,7 +116,7 @@ Example response:
 		client_request_id: 'someUUID',
 		request_id: 'someID',
 		price: 'someprice',
-		total: 'sompeprice',
+		total: 'sompeTotal',
 		amount: '1.0',
 		instrument: 'BTCEUR.SPOT',
 		direction: 'buy',
@@ -126,13 +125,45 @@ Example response:
 		expires_at: '2020-01-31T09:00:01.424Z',
 		state: 'pending_confirmation'
 	}
+	Do you confirm the Quote? y/n :
 
-No trade is made at this point. To confirm the trade you need to invoque the "trade" command.
+No trade is made at this point. To confirm the trade you answer 'yes' or 'y' or 'Y' nothing else will not work.
 
-<code>./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy</code>
+<br>
+
+## getLevels
+To connect to the stream:
+
+<code>./bin/woorton getLevels --base BTC --quote EUR --token yourToken --environment sandbox</code>
 
 Example response: 
 
+	«  	Opening connection.
+		{
+		  instrument: 'BTCEUR.SPOT',
+		  sell: [
+		    { price: 'somePrice', quantity: '1' },
+		    { price: 'somePrice', quantity: '2' }
+		  ],
+		  buy: [
+		    { price: 'somePrice', quantity: '1' },
+		    { price: 'somePrice', quantity: '2' }
+		  ]
+		}
+
+		{
+		  instrument: 'BTCEUR.SPOT',
+		  sell: [
+		    { price: 'somePrice', quantity: '1' },
+		    { price: 'somePrice', quantity: '2' }
+		  ],
+		  buy: [
+		    { price: 'somePrice', quantity: '1' },
+		    { price: 'somePrice', quantity: '2' }
+		  ]
+		}
+		... and more
+	}»
 
 <br>
 

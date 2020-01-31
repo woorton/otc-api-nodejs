@@ -1,14 +1,11 @@
 import * as Rx from 'rxjs';
+import { Environment } from './../types';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import Ws from 'isomorphic-ws';
 
-const token = {
-  youSandboxToken : `SandboxToken`,
-  yourProdToken: `ProdToken`};
-
 const prefixWebsocket = {
   sandbox: 'wss://sandbox.socket.woorton.com/',
-  prod: 'wss://socket.woorton.com/'
+  production: 'wss://socket.woorton.com/'
 };
 
 const createWs = (token: string) =>
@@ -30,13 +27,13 @@ const createWs = (token: string) =>
 
 const sockets: { [key: string]: WebSocketSubject<any> } = {};
 
-export const connect = () => {
+export const connect = (token: string, environment: Environment) => {
   if (!sockets[`${token}`]) {
     const open$ = new Rx.Subject();
     const close$ = new Rx.Subject();
     sockets[`${token}`] = webSocket({
-      url: `${prefixWebsocket.sandbox}`,
-      WebSocketCtor: createWs(`${token.youSandboxToken}`) as any,
+      url: `${prefixWebsocket[environment]}`,
+      WebSocketCtor: createWs(`${token}`) as any,
       closeObserver: close$,
       openObserver: open$,
     });

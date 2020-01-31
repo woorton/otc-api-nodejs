@@ -1,12 +1,12 @@
 import { requestToApi } from '../common';
-import { LedgerResponse } from '../types';
+import { LedgerResponse, Environment } from '../types';
 
 export interface LedgerParams {
   page: string,
   per_page: string
 }
 
-export const getLedger = async (params: LedgerParams): Promise<LedgerResponse> => {
-  const response = (await requestToApi('GET', '/api/v1/ledger', params));
+export const getLedger = async (params: LedgerParams, token: string, environment: Environment): Promise<LedgerResponse> => {
+  const response = (await requestToApi(token, environment, 'GET', '/api/v1/ledger', params));
   return response;
 };

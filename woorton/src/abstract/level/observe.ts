@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs';
 import { subscribe } from '../../api/websocket';
 import { share, filter, map } from 'rxjs/operators';
-import {TestApiResponse,
+import {TestApiResponse,Environment,
   StreamLevel,
   Symbol,
   StreamLevelObserver
@@ -36,7 +36,8 @@ const snapshot = (
   });
 };
 
-export const observe: StreamLevelObserver<WatchOptions> = (options: WebsocketParams) =>
+export const observe: StreamLevelObserver<WatchOptions> = 
+  (token: string, environment: Environment, options: WebsocketParams, ) =>
   new Rx.Observable(subscriber => {
     const symbol = `${options.base}${options.quote}`
     const instrument = `${symbol.toUpperCase()}.SPOT`
@@ -48,7 +49,7 @@ export const observe: StreamLevelObserver<WatchOptions> = (options: WebsocketPar
       event: 'unsubscribe',
       instrument: `${instrument}`
     }
-    const messages$ = subscribe(sub, unsub).pipe(share());
+    const messages$ = subscribe(sub, unsub, token, environment).pipe(share());
 
     const state: StreamLevel<Symbol> = {
       instrument:'',

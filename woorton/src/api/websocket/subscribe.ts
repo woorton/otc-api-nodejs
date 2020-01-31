@@ -1,9 +1,9 @@
 import * as Rx from 'rxjs';
 import { map, share, concatMap } from 'rxjs/operators';
 import { connect } from './connect';
-import { TestApiResponse} from '../types';
+import { TestApiResponse, Environment} from '../types';
 
-export const subscribe = (paramsSub: any, paramsUnsub: any): Rx.Observable<TestApiResponse> => {
+export const subscribe = (paramsSub: any, paramsUnsub: any, token: string, environment: Environment): Rx.Observable<TestApiResponse> => {
   const subMsg = () => ({
     ...paramsSub
   });
@@ -16,7 +16,7 @@ export const subscribe = (paramsSub: any, paramsUnsub: any): Rx.Observable<TestA
     return message;
   };
 
-  const multiplex$ = connect().multiplex(subMsg, unsubMsg, filterFn);
+  const multiplex$ = connect(token, environment).multiplex(subMsg, unsubMsg, filterFn);
   return multiplex$.pipe(
     concatMap(value => {
       if (value.type === 'ERROR') {

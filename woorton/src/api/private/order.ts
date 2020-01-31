@@ -1,5 +1,5 @@
 import { requestToApi } from '../common';
-import { OrderResponseType } from '../types';
+import { OrderResponseType, Environment } from '../types';
 
 export interface OrderParams {
   amount: string,
@@ -10,7 +10,7 @@ export interface OrderParams {
 }
 
 export const order = 
-async (requestParams: OrderParams): Promise<OrderResponseType> => {
+async (requestParams: OrderParams, token: string, environment: Environment): Promise<OrderResponseType> => {
   const crypto = require("crypto");
   const body = {
     client_request_id: crypto.randomBytes(16).toString("hex"),
@@ -21,6 +21,6 @@ async (requestParams: OrderParams): Promise<OrderResponseType> => {
     direction: requestParams.direction
   }
   console.log(body)
-  const response = (await requestToApi('POST', `/api/v1/orders`, body));
+  const response = (await requestToApi(token, environment, 'POST', `/api/v1/orders`, body));
   return response;
 };

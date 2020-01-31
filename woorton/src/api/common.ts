@@ -1,17 +1,13 @@
 import qs from 'qs';
 import axios from 'axios';
-import { ErrorTypeApi, ErrorApi, RequeteApiType} from './types';
-
-const token = {
-  youSandboxToken : `SandboxToken`,
-  yourProdToken: `ProdToken`};
+import { ErrorTypeApi, ErrorApi, RequeteApiType, Environment} from './types';
 
 const prefix = {
   sandbox: 'https://api-sandbox.woorton.com',
-  prod: 'https://api.woorton.com'
+  production: 'https://api.woorton.com'
 };
 
-export const requestToApi = async ( type?: RequeteApiType, path?: string, params?: any ) => {
+export const requestToApi = async ( token: string, environment: Environment, type?: RequeteApiType, path?: string, params?: any ) => {
   const data = {
     ...params,
   }
@@ -21,10 +17,10 @@ export const requestToApi = async ( type?: RequeteApiType, path?: string, params
 
   if(type === 'GET'){
     dataToInsert = null;
-    urlRequest = `${prefix.sandbox}${path}?${dataQueryString}`;
+    urlRequest = `${prefix[environment]}${path}?${dataQueryString}`;
   } else {
     dataToInsert = dataQueryString;
-    urlRequest = `${prefix.sandbox}${path}`;
+    urlRequest = `${prefix[environment]}${path}`;
   }
 
   try {
@@ -33,7 +29,7 @@ export const requestToApi = async ( type?: RequeteApiType, path?: string, params
       url: urlRequest,
       data: dataToInsert,
       headers: {
-        'Authorization': `Bearer ${token.youSandboxToken}?`
+        'Authorization': `Bearer ${token}?`
       },
     });
     return response.data;

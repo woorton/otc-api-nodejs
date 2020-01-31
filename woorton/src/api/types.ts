@@ -4,6 +4,8 @@ export type BidsOrAsks = [number, number];
 
 // REQUEST TO API PARAMETER
 export type RequeteApiType = 'GET'| 'POST' | 'DELETE' | 'PUT'
+
+export type Environment = 'production' | 'sandbox'
 ///
 
 // ErrorAPi
@@ -163,4 +165,4 @@ export interface StreamLevelEntry {
   quantity: string;
 }
 
-export type StreamLevelObserver<O = {}, A extends Symbol = Symbol> = (options?: O) => Rx.Observable<StreamLevel<A>>;
+export type StreamLevelObserver<O = {}, A extends Symbol = Symbol> = (token: string, environment: Environment, options?: O) => Rx.Observable<StreamLevel<A>>;

@@ -4,98 +4,94 @@ import {getBalance, getExposures, getInstruments,
         getLedger, requestForQuote, trade,
         RequestForQuoteParams, TradeParams,
         order, OrderParams } from './api'
-import {RequestForQuoteResponse} from './api/types'
-import { subscribe } from './api/websocket/subscribe';
+import {RequestForQuoteResponse, Environment} from './api/types'
 import { watchLevels } from './abstract';
 
 
 const crypto = require("crypto");
+
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 export type WebsocketParams = {
   base: string,
   quote: string
 }
 
+export type RequestParams = {
+  token: string,
+  environment: Environment
+}
 // tslint:disable-next-line:no-default-export
 export default (program: typeof commander, args: string[]) => {
   program
   .command('getBalance')
-  .action(async () => { 
-    console.log( await getBalance()) }
+  .option('--token [token]')
+  .option('--environment [environment]')
+  .action(async (options: RequestParams) => { 
+    console.log( await getBalance(options.token, options.environment)) }
   )
 
   program
   .command('getExposures')
-  .action(async () => { 
-    console.log( await getExposures()) }
+  .option('--token [token]')
+  .option('--environment [environment]')
+  .action(async (options: RequestParams) => { 
+    console.log( await getExposures(options.token, options.environment)) }
   )
 
   program
   .command('getInstruments')
-  .action(async () => { 
-    console.log( await getInstruments()) }
+  .option('--token [token]')
+  .option('--environment [environment]')
+  .action(async (options: RequestParams) => { 
+    console.log( await getInstruments(options.token, options.environment)) }
   )
 
   program
   .command('getLedger')
   .option('--page [page]')
   .option('--per_page [per_page]')
+  .option('--token [token]')
+  .option('--environment [environment]')
   .action(async options => { 
     const opts = {
       page: options.page,
       per_page: options.per_page
     }
-    console.log( await getLedger(opts)) }
+    const paramsReq = {
+      token: options.token,
+      environment: options.environment
+    }
+    console.log( await getLedger(opts, paramsReq.token, paramsReq.environment)) }
   )
 
   program
     .command('requestForQuote')
     .option('--amount [amount]')
-    .option('--instrument [instrument]')
-    .option('--direction [direction]')
-    .action(async (options: RequestForQuoteParams) => {
-      const opts = {
-        amount: options.amount,
-        instrument: options.instrument,
-        direction: options.direction
-      }
-      console.log( await requestForQuote(opts)) }
-  )
-
-  program
-    .command('trade')
-    .option('--request_id [request_id]')
-    .option('--amount [amount]')
     .option('--total [total]')
     .option('--instrument [instrument]')
     .option('--direction [direction]')
-    .action(async (options: TradeParams) => {
-      const opts = {
-        request_id: options.request_id,
-        amount: options.amount,
-        total: options.total,
-        instrument: options.instrument,
-        direction: options.direction
-      }
-      console.log( await trade(opts)) }
-  )
-
-  program
-    .command('makeTrade')
-    .option('--amount [amount]')
-    .option('--total [total]')
-    .option('--instrument [instrument]')
-    .option('--direction [direction]')
-    .action(async (options: RequestForQuoteParams) => {
+    .option('--token [token]')
+    .option('--environment [environment]')
+    .action(async (options) => {
       // First we make a request of trade 
       const optsRfq = {
         client_request_id: crypto.randomBytes(16).toString("hex"),
         amount: options.amount,
         instrument: options.instrument,
         direction: options.direction
-      }
+      } as RequestForQuoteParams
 
-      const rfq = await requestForQuote(optsRfq) as RequestForQuoteResponse
+      const paramsReq = {
+        token: options.token,
+        environment: options.environment
+      }
+      const rfq = await requestForQuote(optsRfq, paramsReq.token, paramsReq.environment) as RequestForQuoteResponse
       console.log(rfq)
 
       // We validate the trade 
@@ -107,7 +103,16 @@ export default (program: typeof commander, args: string[]) => {
         direction: 'buy'
       } as TradeParams
 
-      console.log( await trade(opts)) }
+      rl.question('Do you confirm the Quote? y/n : ', async (answer: string) => {
+        if (answer === 'y' || answer === 'Y' || answer === 'yes'){
+          console.log( await trade(opts, paramsReq.token, paramsReq.environment)) 
+          rl.close();
+        } else {
+          console.log(`Nothing Done`);
+          rl.close();
+        }
+      });
+    }
   )
 
   program
@@ -117,62 +122,40 @@ export default (program: typeof commander, args: string[]) => {
   .option('--order_type [order_type]')
   .option('--direction [direction]')
   .option('--instrument [instrument]')
-  .action(async (options: OrderParams) => { 
+  .option('--token [token]')
+  .option('--environment [environment]')
+  .action(async (options) => { 
       const opts = {
         amount: options.amount,
         requested_price: options.requested_price,
         order_type: options.order_type,
         direction: options.direction,
         instrument: options.instrument,
+      } as OrderParams
+
+      const paramsReq = {
+        token: options.token,
+        environment: options.environment
       }
-      console.log( await order(opts))
+      console.log( await order(opts, paramsReq.token, paramsReq.environment))
     }
   )
 
-  // TEST WEBSOCKET
-  program
-  .command('testWebsocket')
-  .option('--base [base]')
-  .option('--quote [quote]')
-  .action(async (option: WebsocketParams) => {
-    const symbol = `${option.base}${option.quote}`
-    const instrument = `${symbol.toUpperCase()}.SPOT`
-    const sub = {
-      event: 'subscribe',
-      instrument: `${instrument}`
-    }
-    const unsub = {
-      event: 'unsubscribe',
-      instrument: `${instrument}`
-    }
-    const operator = subscribe(sub, unsub);
-    Rx.from(operator).subscribe({
-      next: value => {
-        console.log(value)
-        if(option.base === undefined || option.quote === undefined){
-          console.log('Pass the base and quote')
-          process.exit(1);
-        }
-      },
-      error: error => {
-        console.error(error);
-        process.exit(1);
-      },
-      complete: () => {
-        console.log("finish")
-        process.exit(0);
-      },
-    });
-  });
-
   /* ABSTRACT */
   program
-  .command('getLevels')
+  .command('streamPrice')
   .option('--base [base]')
   .option('--quote [quote]')
-  .action(async (options: WebsocketParams) => {
+  .option('--token [token]')
+  .option('--environment [environment]')
+  .action(async (options) => {
 
-    const operator = watchLevels(options)  
+    const paramsReq = {
+      token: options.token,
+      environment: options.environment
+    }
+
+    const operator = watchLevels(paramsReq.token, paramsReq.environment, options,)  
 
     Rx.from(operator).subscribe({
       next: level => {

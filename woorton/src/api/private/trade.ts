@@ -1,5 +1,5 @@
 import { requestToApi } from '../common';
-import { TradeResponse } from '../types';
+import { TradeResponse, Environment } from '../types';
 
 export interface TradeParams {
   request_id: string,
@@ -10,7 +10,7 @@ export interface TradeParams {
 }
 
 export const trade = 
-async (requestParams: TradeParams): Promise<TradeResponse> => {
-  const response = (await requestToApi('POST', `/api/v1/trades`, requestParams));
+async (requestParams: TradeParams, token: string, environment: Environment): Promise<TradeResponse> => {
+  const response = (await requestToApi(token, environment, 'POST', `/api/v1/trades`, requestParams));
   return response;
 };

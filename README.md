@@ -1,104 +1,148 @@
-READ ME:
+# Woorton API Implementation In Node JS
 
-Woorton API Implementation In Node JS
+This repositary is a Node JS implementation of Woorton API: https://docs.woorton.com/
 
-Important: By default we use sandbox link, if you wan to use the prod, you could change that in common.ts file ( his directory is /woorton/src/api/ ) and connect.ts file ( his directory is /woorton/src/api/websocket/ )
+<br>
 
+## Prerequisites
+- Node Js
+- https://nodejs.org/en/download/
 
-Prerequisites: 
+Homebrew: 
+- for Mac OS https://treehouse.github.io/installation-guides/mac/homebrew
+- for Windows and Linux https://docs.brew.sh/Homebrew-on-Linux
 
-Copy the folder "woorton" on your computer and you need to install: 
+Yarn
+- https://legacy.yarnpkg.com/fr/docs/install/
 
-- First : Node Js ( follow this link https://nodejs.org/en/download/ ) this came with NPM
+<br>
 
-- Secondly: Homebrew (
-		- For Mac OS follow this link :  https://treehouse.github.io/installation-guides/mac/homebrew
-		- For Windows and Linus OS follow this link: https://docs.brew.sh/Homebrew-on-Linux )
+## Installation
+- Clone or download the repository on your computer 
 
-- Finally Yarn with Homebrew ( follow this link https://legacy.yarnpkg.com/fr/docs/install/  )
+- On a new terminal, go to the following directory:
 
+<code>cd /PATH/otc-api-nodejs/woorton</code>
 
+ - Install the recquired packages and build the bundle (this only need to be done once):
 
-Build The Project:
+<code>npm install</code>
 
-Once these three modules have been installed, first of all open the terminal and go to the directory of the folder "woorton":
+<br>
 
-Once you are on the directory, enter these commands in order :
-	«npm install » :  this will install all the packages necessary for the proper functioning of the API and build the bundle ( Do this only 				   the first time you want to build the project, so this will not be necessary for the next time you want to build )	«yarn build » :  this will build the bundle.
-	«yarn watch » ( optional ) :if you want to modify something in the code (fix for example the values of your variables), this will allow 						 you to build your bundle simultaneously, so you will no longer be forced to type "yarn build" each time you modify the code.
+# Example use of the CLI
+Commands need to be executed on the following directory:
 
-
-Use Of The Cli: ( For all the next steps verify that you are in the directory of the folder "woorton" )
+<code>cd /PATH/otc-api-nodejs/woorton</code>
 
 Dictionary:
 	prefixForCommand:  «./bin/woorton» 
 
-Open the terminal and enter this first : 
-	-  «./bin/woorton» : this will display all the commands (connection to Endpoints and WebSocket) available for this API.
-	you should see something like that :
+<br>
 
-		« Options:
- 			 -h, --help                 output usage information
+## help
+To display all the commands available for the API:
 
-			Commands:
-  					getBalance
-  					getExposures
-  					getInstruments
-  					getLedger [options]
-  					requestForQuote [options]
-  					trade [options]
-  					makeTrade [options]
- 					order [options]
-  					testWebsocket [options]
-  					getLevels [options] »
-					
- - When you want to use one command; get Instruments for example, just enter in the terminal :  «./bin/woorton getInstruments» and you will see the Instruments. You should see something like that : 
+<code>./bin/woorton</code>
 
-			«  {
-  				instrument: [
-    					'ETHEUR.SPOT', 'ETHUSD.SPOT', 'ETHGBP.SPOT',
-    					'ETHUST.SPOT', 'ETHCAD.SPOT', 'ETHCHF.SPOT',
-    					'ETHBTC.SPOT', 'BTCEUR.SPOT', 'BTCUSD.SPOT',
-    					'BTCGBP.SPOT', 'BTCUST.SPOT', 'BTCCAD.SPOT',
-    					'BTCCHF.SPOT', 'LTCEUR.SPOT', 'LTCUSD.SPOT',
-    					'LTCGBP.SPOT', 'LTCUST.SPOT', 'LTCCAD.SPOT',
-    					'LTCCHF.SPOT', 'BCHEUR.SPOT', 'BCHUSD.SPOT',
-   					'BCHGBP.SPOT', 'BCHUST.SPOT', 'BCHCAD.SPOT',
-    					'BCHCHF.SPOT', 'XRPEUR.SPOT', 'XRPUSD.SPOT',
-    					'XRPGBP.SPOT', 'XRPUST.SPOT', 'XRPCAD.SPOT',
-    					'XRPCHF.SPOT', 'XRPBTC.SPOT', 'EOSEUR.SPOT',
-    					'EOSUSD.SPOT', 'EOSCAD.SPOT', 'EOSUST.SPOT',
-    					'EOSCHF.SPOT'
-  				]
-			}»
+Example response: 
+
+	Usage: woorton [options] [command]
+
+	Options:
+	-h, --help                 output usage information
+
+	Commands:
+	getBalance
+	getExposures
+	getInstruments
+	getLedger [options]
+	requestForQuote [options]
+	trade [options]
+	makeTrade [options]
+	order [options]
+	testWebsocket [options]
+	getLevels [options]
+
+To display all the different options on a command:
+
+<code>./bin/woorton getLedger --help</code>
+
+	Usage: woorton makeTrade [options]
+
+	Options:
+	--amount [amount]          
+	--total [total]            
+	--instrument [instrument]  
+	--direction [direction]    
+	-h, --help                 output usage information
+
+<br>
+
+## instruments
+To display all the instruments available:
+
+<code>./bin/woorton getInstruments</code>
+
+Example response: 
+
+	«  {
+		instrument: [
+				'ETHEUR.SPOT', 'ETHUSD.SPOT', 'ETHGBP.SPOT',
+				'ETHUST.SPOT', 'ETHCAD.SPOT', 'ETHCHF.SPOT',
+				'ETHBTC.SPOT', 'BTCEUR.SPOT', 'BTCUSD.SPOT',
+				'BTCGBP.SPOT', 'BTCUST.SPOT', 'BTCCAD.SPOT',
+				'BTCCHF.SPOT', 'LTCEUR.SPOT', 'LTCUSD.SPOT',
+				'LTCGBP.SPOT', 'LTCUST.SPOT', 'LTCCAD.SPOT',
+				'LTCCHF.SPOT', 'BCHEUR.SPOT', 'BCHUSD.SPOT',
+				'BCHGBP.SPOT', 'BCHUST.SPOT', 'BCHCAD.SPOT',
+				'BCHCHF.SPOT', 'XRPEUR.SPOT', 'XRPUSD.SPOT',
+				'XRPGBP.SPOT', 'XRPUST.SPOT', 'XRPCAD.SPOT',
+				'XRPCHF.SPOT', 'XRPBTC.SPOT', 'EOSEUR.SPOT',
+				'EOSUSD.SPOT', 'EOSCAD.SPOT', 'EOSUST.SPOT',
+				'EOSCHF.SPOT'
+		]
+	}»
+
+<br>
+
+## requestForQuote
+To make a request for quote:
+
+<code>./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy</code>
+
+Example response: 
+
+	{
+		client_request_id: 'someUUID',
+		request_id: 'someID',
+		price: 'someprice',
+		total: 'sompeprice',
+		amount: '1.0',
+		instrument: 'BTCEUR.SPOT',
+		direction: 'buy',
+		created_at: '2020-01-31T08:59:40.269Z',
+		order_type: null,
+		expires_at: '2020-01-31T09:00:01.424Z',
+		state: 'pending_confirmation'
+	}
+
+No trade is made at this point. To confirm the trade you need to invoque the "trade" command.
+
+<code>./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy</code>
+
+Example response: 
 
 
-	- Where you see «  [options] » in front of command, just tap  the prefixForCommand, add Command and put this « --help » at the end to see how you can execute the wright way the command for example:  
-		if you enter this: «./bin/woorton getLedger --help», you will see something like that:
+<br>
 
-		« Usage: woorton getLedger [options]
+# FAQ
 
-		   Options:
- 		   --page [page]          
- 		   --per_page [per_page]  
-  		   -h, --help             output usage information »
+### Permission denied
+If you have the following error:
 
-	Example of command with options:
-	If you want a make a request for quote you should enter this: "./bin/woorton requestForQuote --amount 1.0 --instrument BTCEUR.SPOT --direction buy"
-	You should see something like this :
+	bash: ./bin/woorton: Permission denied
 
-			{
-  				client_request_id: 'someUUID',
-  				request_id: 'someID',
- 				price: 'someprice',
-  				total: 'sompeprice',
-  				amount: '1.0',
-  				instrument: 'BTCEUR.SPOT',
-  				direction: 'buy',
-  				created_at: '2020-01-31T08:59:40.269Z',
-  				order_type: null,
- 				expires_at: '2020-01-31T09:00:01.424Z',
-  				state: 'pending_confirmation'
-			}
+Change the permission with:
 
-	For more informations of the use of the API, follow this link : https://docs.woorton.com/#tag/History/paths/~1trades/get
+<code>chmod +x ./bin/woorton</code>

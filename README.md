@@ -88,10 +88,10 @@ Open the terminal and enter this first :
 	You should see something like this :
 
 			{
-  				client_request_id: '7bd62767e7990307e3749f37f09e318f',
-  				request_id: 'cc5563b2-759a-4c69-9550-1f5dcff7c369',
- 				price: '8503.2948',
-  				total: '8503.29',
+  				client_request_id: 'someUUID',
+  				request_id: 'someID',
+ 				price: 'someprice',
+  				total: 'sompeprice',
   				amount: '1.0',
   				instrument: 'BTCEUR.SPOT',
   				direction: 'buy',

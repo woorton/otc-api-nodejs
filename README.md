@@ -2,6 +2,8 @@ READ ME:
 
 Woorton API Implementation In Node JS
 
+Important: By default we use sandbox link, if you wan to use the prod, you could change that in common.ts file ( his directory is /woorton/src/api/ ) and connect.ts file ( his directory is /woorton/src/api/websocket/ )
+
 
 Prerequisites: 
 

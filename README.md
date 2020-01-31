@@ -48,8 +48,8 @@ Open the terminal and enter this first :
  					order [options]
   					testWebsocket [options]
   					getLevels [options] »
-
-	- When you want to use one command; get Instruments for exemple, just enter in the terminal :  «./bin/woorton getInstruments» and you will see the Instruments. You should see something like that : 
+					
+ - When you want to use one command; get Instruments for example, just enter in the terminal :  «./bin/woorton getInstruments» and you will see the Instruments. You should see something like that : 
 
 			«  {
   				instrument: [

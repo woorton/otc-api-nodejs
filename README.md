@@ -7,7 +7,7 @@ Important: By default we use sandbox link, if you wan to use the prod, you could
 
 Prerequisites: 
 
-You need to install: 
+Copy the folder "woorton" on your computer and you need to install: 
 
 - First : Node Js ( follow this link https://nodejs.org/en/download/ ) this came with NPM
 
@@ -18,16 +18,17 @@ You need to install:
 - Finally Yarn with Homebrew ( follow this link https://legacy.yarnpkg.com/fr/docs/install/  )
 
 
+
 Build The Project:
 
-Once these three modules have been installed, first of all open the terminal and go to the directory of the file:
+Once these three modules have been installed, first of all open the terminal and go to the directory of the folder "woorton":
 
 Once you are on the directory, enter these commands in order :
 	«npm install » :  this will install all the packages necessary for the proper functioning of the API and build the bundle ( Do this only 				   the first time you want to build the project, so this will not be necessary for the next time you want to build )	«yarn build » :  this will build the bundle.
 	«yarn watch » ( optional ) :if you want to modify something in the code (fix for example the values of your variables), this will allow 						 you to build your bundle simultaneously, so you will no longer be forced to type "yarn build" each time you modify the code.
 
 
-Use Of The Cli:
+Use Of The Cli: ( For all the next steps verify that you are in the directory of the folder "woorton" )
 
 Dictionary:
 	prefixForCommand:  «./bin/woorton» 

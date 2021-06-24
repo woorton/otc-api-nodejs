@@ -1,0 +1,16 @@
+{
+  "name": "api_woorton_v2",
+  "version": "1.0.0",
+  "description": "Implementation of the api v2 in node js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Neil NOUMSI <neilnoumsi@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "ws": "^7.5.0"
+  }
+}

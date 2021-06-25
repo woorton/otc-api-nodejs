@@ -33,7 +33,7 @@ module.exports = function (token, type, callback) {
       // GET MESSAGE WITH PRICE
       if (stream.levels !== undefined && Array.from(stream.levels.buy).length > 0 && Array.from(stream.levels.sell).length > 0) {
         callback(stream)
-        // you can call client here and post an order (FOK)
+        // use the callback functions to manipulate the prices
       }
     }
   }

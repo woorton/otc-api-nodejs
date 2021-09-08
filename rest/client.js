@@ -49,6 +49,7 @@ module.exports = {
   },
 
   createOrder (token, type, dataOrder) {
+    const validUntil = new Date().getTime()) + 2 * 1000
     const params = {
       instrument: dataOrder.instrument,
       order_type: dataOrder.order_type,

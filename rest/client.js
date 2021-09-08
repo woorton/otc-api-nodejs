@@ -56,7 +56,7 @@ module.exports = {
       price: parseFloat(dataOrder.price),
       quantity: parseFloat(dataOrder.quantity),
       side: dataOrder.side,
-      valid_until: dataOrder.valid_until,
+      valid_until: validUntil,
     }
     const jsonToSend = JSON.stringify(params)
     return header(token, type).post('order', jsonToSend)
